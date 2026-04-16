@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BHP — Bengaluru Home Prices</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <!-- Background canvas -->
+  <canvas id="bg"></canvas>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <span class="logo-mark">BHP</span>
+      <span class="logo-text">Bengaluru Home Prices</span>
+    </div>
+    <div class="header-tag">ML-Powered · 2024</div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-eyebrow">Real Estate Intelligence</div>
+    <h1 class="hero-title">What's your<br><em>home worth</em>?</h1>
+    <p class="hero-sub">Enter property details below and our machine learning model will estimate the market price instantly.</p>
+  </section>
+
+  <!-- Card -->
+  <main class="card-wrap">
+    <div class="card">
+
+      <!-- Progress dots -->
+      <div class="steps">
+        <span class="step active" data-label="Size"></span>
+        <span class="step" data-label="Rooms"></span>
+        <span class="step" data-label="Location"></span>
+      </div>
+
+      <!-- Step 1: Area -->
+      <div class="field-group" id="step-size">
+        <label class="field-label">
+          <span class="label-num">01</span>
+          Area <span class="unit">sq. ft.</span>
+        </label>
+        <div class="sqft-wrap">
+          <button class="sqft-btn" onclick="adjustSqft(-100)">−</button>
+          <input id="uiSqft" type="number" value="1000" min="300" max="10000" step="50" />
+          <button class="sqft-btn" onclick="adjustSqft(100)">+</button>
+        </div>
+        <input type="range" id="sqftRange" min="300" max="10000" step="50" value="1000" class="slider" oninput="syncSqft(this.value)" />
+        <div class="range-labels"><span>300</span><span>10,000</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Step 2: BHK + Bath -->
+      <div class="field-group" id="step-rooms">
+        <div class="two-col">
+          <div>
+            <label class="field-label">
+              <span class="label-num">02</span>BHK
+            </label>
+            <div class="pill-group" id="bhkGroup">
+              <button class="pill" data-val="1">1</button>
+              <button class="pill active" data-val="2">2</button>
+              <button class="pill" data-val="3">3</button>
+              <button class="pill" data-val="4">4</button>
+              <button class="pill" data-val="5">5</button>
+            </div>
+          </div>
+          <div>
+            <label class="field-label">
+              <span class="label-num">03</span>Bathrooms
+            </label>
+            <div class="pill-group" id="bathGroup">
+              <button class="pill" data-val="1">1</button>
+              <button class="pill active" data-val="2">2</button>
+              <button class="pill" data-val="3">3</button>
+              <button class="pill" data-val="4">4</button>
+              <button class="pill" data-val="5">5</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Step 3: Location -->
+      <div class="field-group" id="step-location">
+        <label class="field-label" for="uiLocations">
+          <span class="label-num">04</span>Location
+        </label>
+        <div class="select-wrap">
+          <select id="uiLocations">
+            <option value="" disabled selected>Choose a locality…</option>
+          </select>
+          <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div id="locationSearch" class="location-search-wrap">
+          <input id="locationFilter" type="text" placeholder="Type to filter…" oninput="filterLocations(this.value)" />
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="cta-btn" id="estimateBtn" onclick="onClickedEstimatePrice()">
+        <span class="cta-text">Estimate Price</span>
+        <span class="cta-icon">→</span>
+      </button>
+
+      <!-- Result -->
+      <div class="result-wrap" id="resultWrap">
+        <div class="result-label">Estimated Market Price</div>
+        <div class="result-price" id="uiEstimatedPrice">—</div>
+        <div class="result-note">Based on current Bengaluru market data</div>
+      </div>
+
+    </div>
+
+    <!-- Side stats -->
+    <aside class="side-info">
+      <div class="stat-card">
+        <div class="stat-icon">🏙️</div>
+        <div class="stat-val" id="statLocations">242</div>
+        <div class="stat-key">Localities Covered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-val">13,000+</div>
+        <div class="stat-key">Properties Trained On</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-val">~84%</div>
+        <div class="stat-key">Model Accuracy (R²)</div>
+      </div>
+      <div class="info-note">
+        <strong>How it works</strong><br>
+        A linear regression model trained on Bengaluru housing data from Kaggle. Features include area, BHK, bathrooms, and one-hot encoded locality.
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <p>Built with FastAPI · scikit-learn · Vanilla JS &nbsp;·&nbsp; Data: Kaggle Bengaluru House Price Dataset</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
